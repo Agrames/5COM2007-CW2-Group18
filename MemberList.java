@@ -1,0 +1,55 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.memberlist;
+import java.util.ArrayList;
+/**
+ *
+ * @author to23abg
+ */
+
+
+public class MemberList {
+
+    private ArrayList<Member> members;
+
+    public MemberList() {
+        members = new ArrayList<>();
+    }
+
+    public void addMember(Member m) {
+        if (m != null) {
+            members.add(m);
+        }
+    }
+
+    public void removeMember(Member m) {
+        members.remove(m);
+    }
+
+    public ArrayList<Member> searchMembers(String name) {
+        ArrayList<Member> results = new ArrayList<>();
+
+        for (Member m : members) {
+            if (m.getName().toLowerCase().contains(name.toLowerCase())) {
+                results.add(m);
+            }
+        }
+
+        return results;
+    }
+
+    public Member getMemberByEmail(String email) {
+        for (Member m : members) {
+            if (m.getEmail().equals(email)) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Member> getMembers() {
+        return members;
+    }
+}
