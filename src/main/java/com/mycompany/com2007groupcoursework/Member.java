@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.member;
+package com.mycompany.com2007groupcoursework;
 import java.util.ArrayList;
 /**
  *
