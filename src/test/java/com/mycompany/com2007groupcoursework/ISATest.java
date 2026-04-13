@@ -70,4 +70,48 @@ public class ISATest {
         b.clearDonator();
         assertNull(b.getDonator());
     }
+
+    @Test
+    public void testAddMagazineToCollection() {
+        Collection col = new Collection();
+        Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
+        col.addMagazine("Nature", "English", donor, "Springer", "Vol.42");
+        assertNotNull(col.getItem("Nature"));
+        assertEquals(1, col.getItems().size());
+    }
+
+    @Test
+    public void testMagazineFoundInSearch() {
+        Collection col = new Collection();
+        col.addMagazine("Nature Weekly", "English", null, "Springer", "Vol.1");
+        col.addBook("Nature of Code", "Shiffman", null, "English", "999");
+        ArrayList<Item> results = col.searchItems("nature");
+        assertEquals(2, results.size());
+    }
+
+    @Test
+    public void testMagazineUpdateAttributes() {
+        Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
+        Magazine mag = new Magazine("Old Title", "English", donor, "OldPub", "Issue1");
+        mag.setTitle("New Title");
+        mag.setPublisher("NewPub");
+        mag.setIssueNumber("Issue2");
+        mag.setLanguage("French");
+        assertEquals("New Title", mag.getTitle());
+        assertEquals("NewPub", mag.getPublisher());
+        assertEquals("Issue2", mag.getIssueNumber());
+        assertEquals("French", mag.getLanguage());
+    }
+
+    @Test
+    public void testMemberReturnUpdatesState() {
+        Member m = new Member("Alice", "1 Road", "a@b.com", 2);
+        Magazine mag = new Magazine("Nature", "English", null, "Springer", "Vol.1");
+        m.lend(mag);
+        assertEquals(1, m.borrowingQty());
+        assertFalse(mag.isAvailable());
+        m.returnItem(mag);
+        assertEquals(0, m.borrowingQty());
+        assertTrue(mag.isAvailable());
+    }
 }

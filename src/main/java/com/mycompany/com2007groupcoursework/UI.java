@@ -83,6 +83,7 @@ public class UI {
         Button addBookBtn = new Button("Add Book");
         Button addDVDBtn  = new Button("Add DVD");
         Button addMagBtn  = new Button("Add Magazine");
+        Button editBtn    = new Button("Edit Item");
         Button lendBtn    = new Button("Lend");
         Button returnBtn  = new Button("Return");
         Button removeBtn  = new Button("Remove");
@@ -92,12 +93,14 @@ public class UI {
         addBookBtn.setOnAction(e -> addBook());
         addDVDBtn.setOnAction(e -> addDVD());
         addMagBtn.setOnAction(e -> addMagazine());
+        editBtn.setOnAction(e -> editItem());
         lendBtn.setOnAction(e -> lendItem());
         returnBtn.setOnAction(e -> returnItem());
         removeBtn.setOnAction(e -> removeItem());
 
         buttons.getChildren().addAll(searchBtn, showAllBtn, new Separator(),
-                addBookBtn, addDVDBtn, addMagBtn, new Separator(), lendBtn, returnBtn, removeBtn);
+                addBookBtn, addDVDBtn, addMagBtn, new Separator(),
+                editBtn, new Separator(), lendBtn, returnBtn, removeBtn);
 
         VBox layout = new VBox(8, itemTable, buttons);
         layout.setPadding(new Insets(10));
@@ -240,6 +243,80 @@ public class UI {
         collection.removeItem(selected);
         refreshItems();
         showAlert("Success", "Item removed.");
+    }
+
+    private void editItem() {
+        Item selected = itemTable.getSelectionModel().getSelectedItem();
+        if (selected == null) { showAlert("No Selection", "Please select an item first."); return; }
+
+        Dialog<String[]> dialog = new Dialog<>();
+        dialog.setHeaderText(null);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10); grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        if (selected instanceof Magazine mag) {
+            dialog.setTitle("Edit Magazine");
+            TextField title     = new TextField(mag.getTitle());
+            TextField language  = new TextField(mag.getLanguage());
+            TextField publisher = new TextField(mag.getPublisher());
+            TextField issue     = new TextField(mag.getIssueNumber());
+            grid.add(new Label("Title:"),        0, 0); grid.add(title,     1, 0);
+            grid.add(new Label("Language:"),     0, 1); grid.add(language,  1, 1);
+            grid.add(new Label("Publisher:"),    0, 2); grid.add(publisher, 1, 2);
+            grid.add(new Label("Issue Number:"), 0, 3); grid.add(issue,     1, 3);
+            dialog.getDialogPane().setContent(grid);
+            dialog.setResultConverter(btn -> btn == ButtonType.OK
+                    ? new String[]{title.getText().trim(), language.getText().trim(),
+                                   publisher.getText().trim(), issue.getText().trim()} : null);
+            dialog.showAndWait().ifPresent(f -> {
+                mag.setTitle(f[0]); mag.setLanguage(f[1]);
+                mag.setPublisher(f[2]); mag.setIssueNumber(f[3]);
+                refreshItems(); showAlert("Success", "Magazine updated!");
+            });
+
+        } else if (selected instanceof Book b) {
+            dialog.setTitle("Edit Book");
+            TextField title    = new TextField(b.getTitle());
+            TextField language = new TextField(b.getLanguage());
+            TextField author   = new TextField(b.getAuthor());
+            TextField isbn     = new TextField(b.getIsbn());
+            grid.add(new Label("Title:"),    0, 0); grid.add(title,    1, 0);
+            grid.add(new Label("Language:"), 0, 1); grid.add(language, 1, 1);
+            grid.add(new Label("Author:"),   0, 2); grid.add(author,   1, 2);
+            grid.add(new Label("ISBN:"),     0, 3); grid.add(isbn,     1, 3);
+            dialog.getDialogPane().setContent(grid);
+            dialog.setResultConverter(btn -> btn == ButtonType.OK
+                    ? new String[]{title.getText().trim(), language.getText().trim(),
+                                   author.getText().trim(), isbn.getText().trim()} : null);
+            dialog.showAndWait().ifPresent(f -> {
+                b.setTitle(f[0]); b.setLanguage(f[1]);
+                b.setAuthor(f[2]); b.setIsbn(f[3]);
+                refreshItems(); showAlert("Success", "Book updated!");
+            });
+
+        } else if (selected instanceof DVD d) {
+            dialog.setTitle("Edit DVD");
+            TextField title    = new TextField(d.getTitle());
+            TextField language = new TextField(d.getLanguage());
+            TextField director = new TextField(d.getDirector());
+            TextField audio    = new TextField(String.join(",", d.getAudioLanguages()));
+            grid.add(new Label("Title:"),                          0, 0); grid.add(title,    1, 0);
+            grid.add(new Label("Language:"),                       0, 1); grid.add(language, 1, 1);
+            grid.add(new Label("Director:"),                       0, 2); grid.add(director, 1, 2);
+            grid.add(new Label("Audio Languages (comma-separated):"), 0, 3); grid.add(audio, 1, 3);
+            dialog.getDialogPane().setContent(grid);
+            dialog.setResultConverter(btn -> btn == ButtonType.OK
+                    ? new String[]{title.getText().trim(), language.getText().trim(),
+                                   director.getText().trim(), audio.getText().trim()} : null);
+            dialog.showAndWait().ifPresent(f -> {
+                d.setTitle(f[0]); d.setLanguage(f[1]);
+                d.setDirector(f[2]); d.setAudioLanguages(f[3].split(","));
+                refreshItems(); showAlert("Success", "DVD updated!");
+            });
+        }
     }
 
     // ===== MEMBER OPERATIONS =====
