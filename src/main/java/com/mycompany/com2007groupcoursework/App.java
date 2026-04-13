@@ -1,16 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.com2007groupcoursework;
 
-/**
- *
- * @author HP
- */
 public class App {
-
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Collection collection = new Collection();
+        MemberList memberList = new MemberList();
+        FileHandler.loadFromFile("input-1.dat", collection, memberList);
+        UI ui = new UI(collection, memberList);
+        ui.run();
     }
 }
