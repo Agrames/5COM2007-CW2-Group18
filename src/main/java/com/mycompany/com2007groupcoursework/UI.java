@@ -28,7 +28,12 @@ public class UI {
             System.out.println("8. Save to file");
             System.out.println("9. Exit");
             System.out.print("Enter choice: ");
-            choice = Integer.parseInt(scanner.nextLine());
+            try {
+                choice = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input, please enter a number.");
+                continue;
+            }
             switch (choice) {
                 case 1 -> searchItems();
                 case 2 -> addItem();
@@ -56,8 +61,18 @@ public class UI {
             System.out.println((i + 1) + ". " + results.get(i));
         }
         System.out.print("Select item number (0 to cancel): ");
-        int sel = Integer.parseInt(scanner.nextLine());
+        int sel;
+        try {
+            sel = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+            return;
+        }
         if (sel == 0) return;
+        if (sel < 1 || sel > results.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
         Item selected = results.get(sel - 1);
         System.out.println("\n" + selected);
         if (!selected.isAvailable()) {
@@ -68,7 +83,13 @@ public class UI {
     private void addItem() {
         System.out.println("1. Book  2. DVD  3. Magazine");
         System.out.print("Choose type: ");
-        int type = Integer.parseInt(scanner.nextLine());
+        int type;
+        try {
+            type = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+            return;
+        }
         System.out.print("Title: ");
         String title = scanner.nextLine();
         System.out.print("Language: ");
@@ -104,6 +125,7 @@ public class UI {
                 if (donor != null) donor.addDonation(collection.getItem(title));
                 System.out.println("Magazine added!");
             }
+            default -> System.out.println("Invalid type!");
         }
     }
 
@@ -131,8 +153,18 @@ public class UI {
                 " | Email: " + results.get(i).getEmail());
         }
         System.out.print("Select member number (0 to cancel): ");
-        int sel = Integer.parseInt(scanner.nextLine());
+        int sel;
+        try {
+            sel = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+            return;
+        }
         if (sel == 0) return;
+        if (sel < 1 || sel > results.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
         Member m = results.get(sel - 1);
         System.out.println("\nName: " + m.getName());
         System.out.println("Address: " + m.getAddress());
@@ -163,12 +195,13 @@ public class UI {
             System.out.println("Member not found!");
             return;
         }
-        if (member.borrowingQty() >= member.getDonatedQty()) {
-            System.out.println("Member has reached borrow limit!");
-            return;
-        }
+        int before = member.borrowingQty();
         member.lend(item);
-        System.out.println("Item lent successfully!");
+        if (member.borrowingQty() > before) {
+            System.out.println("Item lent successfully!");
+        } else {
+            System.out.println("Member has reached borrow limit!");
+        }
     }
 
     private void returnItem() {
