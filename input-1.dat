@@ -1,7 +1,13 @@
-Member|Alice Smith|10 Main Street|alice@isa.com|3
-Book|The Great Gatsby|F. Scott Fitzgerald|9780743273565|English|
-Magazine|National Geographic|English|National Geographic Society|Vol.245|
-DVD|Inception|English|Christopher Nolan|English,French,Spanish|
-Member|Bob Jones|5 Park Lane|bob@isa.com|2
-Book|1984|George Orwell|9780451524935|English|alice@isa.com
-Magazine|Time Weekly|English|Time Inc.|Issue 12|
+Book|The Shining|Stephen King|9780345806789|English|wong.j@aol.com
+Book|드라큘라|Bram Stoker|9788061879049|Korean|steve24@gmail.com
+Member|John Wong|1 Church Lane, Hatfield, AL10 0AG|wong.j@aol.com|3
+DVD|精武門|Chinese|羅維|Cantonese,Mandarin,English|a.smith@yahoo.com
+Member|Amy Smith|74 Main Street, Hertford, SG13 7AB|a.smith@yahoo.com|3
+Book|Le Symbole Perdu|Dan Brown|9782709636346|French|
+DVD|La Grande Évasion|French|John Sturges|French, German, Russian|
+Member|Jane Harper|2 First Avenue, St Albans, AL1 2PD|jh2000@gmail.com|0
+Member|Steve Kim|21 Station Road, St Albans, AL1 1AT|steve24@gmail.com|2
+DVD|폰|Korean|안병기|Korean|
+DVD|リング|Japanese|中田 秀夫|Japanese, Korean|
+Member|Andrey Bolotov|59 Tree Lane, Hertford, SG12 3BT|bolotov.a@outlook.com|1
+Book|Война и мир|Leo Tolstoy|9781909115033|Russian|
