@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author HP
+ * @author zs25adm
  */
 public class ISATest {
 
@@ -28,9 +28,9 @@ public class ISATest {
     public void testMagazineLoanReturn(){
         // loan a magazine and check its not available, then return it
         Member donor = new Member("Alice", "1 Road", "a@b.com", 2);
-        Member borrow = new Member("Bob", "2 Road", "b@b.com", 1);
+        Member borrower = new Member("Bob", "2 Road", "b@b.com", 1);
         Magazine mag = new Magazine("Nature", "English", donor, "Springer", "Vol.42");
-        mag.loanTo(borrow);
+        mag.loanTo(borrower);
         assertFalse(mag.isAvailable());
         mag.returnLoan();
         assertTrue(mag.isAvailable());
@@ -60,28 +60,28 @@ public class ISATest {
         Collection col = new Collection();
         col.addBook("The Shining", "Stephen King", null, "English", "123");
         // should return empty list if nothing matches
-        ArrayList<Item> r = col.searchItems("xyz");
-        assertTrue(r.isEmpty());
+        ArrayList<Item> results = col.searchItems("xyz");
+        assertTrue(results.isEmpty());
     }
 
     @Test
     public void testBorrowingLimit(){
         // donatedQty = 1 means max borrow is 1, second book should be blocked
-        Member m = new Member("Alice", "1 Road", "a@b.com", 1);
-        Book b1 = new Book("Book1", "Auth", null, "English", "111");
-        Book b2 = new Book("Book2", "Auth", null, "English", "222");
-        m.lend(b1);
-        assertEquals(1, m.borrowingQty());
-        m.lend(b2);
-        assertEquals(1, m.borrowingQty());
+        Member member = new Member("Alice", "1 Road", "a@b.com", 1);
+        Book book1 = new Book("Book1", "Auth", null, "English", "111");
+        Book book2 = new Book("Book2", "Auth", null, "English", "222");
+        member.lend(book1);
+        assertEquals(1, member.borrowingQty());
+        member.lend(book2);
+        assertEquals(1, member.borrowingQty());
     }
 
     @Test
     public void testClearDonator(){
         Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
-        Book b = new Book("Book", "Auth", donor, "English", "123");
-        b.clearDonator();
-        assertNull(b.getDonator());
+        Book book = new Book("Book", "Auth", donor, "English", "123");
+        book.clearDonator();
+        assertNull(book.getDonator());
     }
 
     @Test
@@ -120,14 +120,14 @@ public class ISATest {
 
     @Test
     public void testReturnItem(){
-        Member m = new Member("Alice", "1 Road", "a@b.com", 2);
+        Member member = new Member("Alice", "1 Road", "a@b.com", 2);
         Magazine mag = new Magazine("Nature", "English", null, "Springer", "Vol.1");
-        m.lend(mag);
-        assertEquals(1, m.borrowingQty());
+        member.lend(mag);
+        assertEquals(1, member.borrowingQty());
         assertFalse(mag.isAvailable());
         // return should update both the member borrowing count and the item status
-        m.returnItem(mag);
-        assertEquals(0, m.borrowingQty());
+        member.returnItem(mag);
+        assertEquals(0, member.borrowingQty());
         assertTrue(mag.isAvailable());
     }
 }
