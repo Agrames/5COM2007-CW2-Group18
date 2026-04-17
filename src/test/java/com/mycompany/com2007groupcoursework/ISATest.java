@@ -1,13 +1,20 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
 package com.mycompany.com2007groupcoursework;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Agrames
+ */
 public class ISATest {
 
     @Test
-    public void testMagazineAttributes() {
+    public void testMagazine() {
         Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
         Magazine mag = new Magazine("Nature", "English", donor, "Springer", "Vol.42");
         assertEquals("Nature", mag.getTitle());
@@ -48,18 +55,18 @@ public class ISATest {
     public void testSearchNoMatch() {
         Collection col = new Collection();
         col.addBook("The Shining", "Stephen King", null, "English", "123");
-        assertTrue(col.searchItems("xyz").isEmpty());
+        ArrayList<Item> r = col.searchItems("xyz");
+        assertTrue(r.isEmpty());
     }
 
     @Test
     public void testBorrowingLimit() {
-        // donatedQty=1 means maxBorrow()=1, so only one item can be borrowed
         Member m = new Member("Alice", "1 Road", "a@b.com", 1);
         Book b1 = new Book("Book1", "Auth", null, "English", "111");
         Book b2 = new Book("Book2", "Auth", null, "English", "222");
         m.lend(b1);
         assertEquals(1, m.borrowingQty());
-        m.lend(b2); // should be blocked — limit already reached
+        m.lend(b2);
         assertEquals(1, m.borrowingQty());
     }
 
@@ -81,7 +88,7 @@ public class ISATest {
     }
 
     @Test
-    public void testMagazineFoundInSearch() {
+    public void testMagazineInSearch() {
         Collection col = new Collection();
         col.addMagazine("Nature Weekly", "English", null, "Springer", "Vol.1");
         col.addBook("Nature of Code", "Shiffman", null, "English", "999");
@@ -90,7 +97,7 @@ public class ISATest {
     }
 
     @Test
-    public void testMagazineUpdateAttributes() {
+    public void testMagazineSetters() {
         Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
         Magazine mag = new Magazine("Old Title", "English", donor, "OldPub", "Issue1");
         mag.setTitle("New Title");
@@ -104,7 +111,7 @@ public class ISATest {
     }
 
     @Test
-    public void testMemberReturnUpdatesState() {
+    public void testReturnItem() {
         Member m = new Member("Alice", "1 Road", "a@b.com", 2);
         Magazine mag = new Magazine("Nature", "English", null, "Springer", "Vol.1");
         m.lend(mag);
