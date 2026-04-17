@@ -9,12 +9,13 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Agrames
+ * @author HP
  */
 public class ISATest {
 
     @Test
-    public void testMagazine() {
+    public void testMagazine(){
+        // check magazine is created with the right attributes
         Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
         Magazine mag = new Magazine("Nature", "English", donor, "Springer", "Vol.42");
         assertEquals("Nature", mag.getTitle());
@@ -24,7 +25,8 @@ public class ISATest {
     }
 
     @Test
-    public void testMagazineLoanReturn() {
+    public void testMagazineLoanReturn(){
+        // loan a magazine and check its not available, then return it
         Member donor = new Member("Alice", "1 Road", "a@b.com", 2);
         Member borrow = new Member("Bob", "2 Road", "b@b.com", 1);
         Magazine mag = new Magazine("Nature", "English", donor, "Springer", "Vol.42");
@@ -35,7 +37,8 @@ public class ISATest {
     }
 
     @Test
-    public void testSearchFindsMatch() {
+    public void testSearchFindsMatch(){
+        // search should find both books with shin in the title
         Collection col = new Collection();
         col.addBook("The Shining", "Stephen King", null, "English", "123");
         col.addBook("Shindig Weekly", "Jane Doe", null, "English", "456");
@@ -44,7 +47,8 @@ public class ISATest {
     }
 
     @Test
-    public void testSearchCaseInsensitive() {
+    public void testSearchCaseInsensitive(){
+        //search should work regardless of case
         Collection col = new Collection();
         col.addBook("The Shining", "Stephen King", null, "English", "123");
         ArrayList<Item> results = col.searchItems("SHINING");
@@ -52,15 +56,17 @@ public class ISATest {
     }
 
     @Test
-    public void testSearchNoMatch() {
+    public void testSearchNoMatch(){
         Collection col = new Collection();
         col.addBook("The Shining", "Stephen King", null, "English", "123");
+        // should return empty list if nothing matches
         ArrayList<Item> r = col.searchItems("xyz");
         assertTrue(r.isEmpty());
     }
 
     @Test
-    public void testBorrowingLimit() {
+    public void testBorrowingLimit(){
+        // donatedQty = 1 means max borrow is 1, second book should be blocked
         Member m = new Member("Alice", "1 Road", "a@b.com", 1);
         Book b1 = new Book("Book1", "Auth", null, "English", "111");
         Book b2 = new Book("Book2", "Auth", null, "English", "222");
@@ -71,7 +77,7 @@ public class ISATest {
     }
 
     @Test
-    public void testClearDonator() {
+    public void testClearDonator(){
         Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
         Book b = new Book("Book", "Auth", donor, "English", "123");
         b.clearDonator();
@@ -79,16 +85,18 @@ public class ISATest {
     }
 
     @Test
-    public void testAddMagazineToCollection() {
+    public void testAddMagazineToCollection(){
         Collection col = new Collection();
         Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
         col.addMagazine("Nature", "English", donor, "Springer", "Vol.42");
+        // check the magazine is actually in the collection
         assertNotNull(col.getItem("Nature"));
         assertEquals(1, col.getItems().size());
     }
 
     @Test
-    public void testMagazineInSearch() {
+    public void testMagazineInSearch(){
+        // magazines should show up in search results just like books
         Collection col = new Collection();
         col.addMagazine("Nature Weekly", "English", null, "Springer", "Vol.1");
         col.addBook("Nature of Code", "Shiffman", null, "English", "999");
@@ -97,7 +105,7 @@ public class ISATest {
     }
 
     @Test
-    public void testMagazineSetters() {
+    public void testMagazineSetters(){
         Member donor = new Member("Alice", "1 Road", "a@b.com", 1);
         Magazine mag = new Magazine("Old Title", "English", donor, "OldPub", "Issue1");
         mag.setTitle("New Title");
@@ -111,12 +119,13 @@ public class ISATest {
     }
 
     @Test
-    public void testReturnItem() {
+    public void testReturnItem(){
         Member m = new Member("Alice", "1 Road", "a@b.com", 2);
         Magazine mag = new Magazine("Nature", "English", null, "Springer", "Vol.1");
         m.lend(mag);
         assertEquals(1, m.borrowingQty());
         assertFalse(mag.isAvailable());
+        // return should update both the member borrowing count and the item status
         m.returnItem(mag);
         assertEquals(0, m.borrowingQty());
         assertTrue(mag.isAvailable());
