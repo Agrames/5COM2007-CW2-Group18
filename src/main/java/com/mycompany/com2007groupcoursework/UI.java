@@ -196,7 +196,7 @@ public class UI {
             showAlert("Success", "Book added!");
         }
     }
-    //add a new dvd - split audio languages by comma
+    //add a new dvd, split audio languages by comma
     private void addDVD(){
         Dialog<String[]> dialog = buildDialog("Add DVD",
                 new String[]{"Title", "Director", "Language", "Audio Languages (comma-separated)", "Donor Email (optional)"});
